@@ -26,7 +26,13 @@ router.post('/', async (req, res)=>{
 
     try{
         const newStudent = new studenModel(data)
-    
+        const emailAlreadyExist = await studenModel.findOne({ email: data.email })
+
+        if (emailAlreadyExist !== null) 
+        return res.json({
+            message: "El correo ya esta en uso"
+        })
+
         await newStudent.save()
         res.json({
             message: "El estudiante se creo correctamente",
@@ -43,13 +49,14 @@ router.post('/', async (req, res)=>{
 
 router.put('/:id', async(req,res)=>{
     let id = req.params.id;
+
     if (id === "null") {
         id = new Types.ObjectId()
     }
     let data = req.body;  
     try{
         const student = await studenModel.findByIdAndUpdate(id, data, 
-            { upsert: true, returnDocument: "after", new: true})
+            { upsert: true, returnDocument: "after"})
         res.json({
             message: "El estudiante se creo correctamente",
             data: student
