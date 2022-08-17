@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const student = require("./models/student.model")
 const clases = require("./models/clases.model")
 const ClassesActivas = require("./models/clasesActuvas.model")
+require("dotenv").config()
 
 //Función principal
 const app = express();
